@@ -14,7 +14,9 @@
   "description": "",
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.12",
+    "dotenv": "^17.2.2",
     "next": "^15.5.2",
+    "openai": "^5.19.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
