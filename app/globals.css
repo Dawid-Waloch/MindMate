@@ -4,3 +4,7 @@
   background-color: #2c79f5;
   color: white;
 }
+
+button:hover {
+  cursor: pointer;
+}

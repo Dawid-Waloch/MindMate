@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Header = () => {
     return (
-        <div className="flex w-full h-20 max-w-3xl items-center justify-center  bg-white/20 rounded-lg shadow-lg ">
+        <div className="flex w-full h-20 max-w-3xl items-center justify-center bg-white/20 rounded-lg shadow-lg ">
             <Link className="flex-1" href={'/'}>
                 <div className="pl-5 text-2xl">
                     MindMate
