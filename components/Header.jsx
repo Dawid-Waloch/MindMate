@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 const Header = () => {
+    const [streak, setStreak] = useState("");
+
+    useEffect(() => {
+        const streakLvl = JSON.parse(localStorage.getItem("streakLvl")) || "";
+        setStreak(streakLvl);
+    }, []);
+
     return (
         <div className="flex w-full h-20 max-w-3xl items-center justify-center bg-white/20 rounded-lg shadow-lg ">
             <Link className="flex-1" href={'/'}>
@@ -14,7 +21,7 @@ const Header = () => {
                     <div className="bg-white/20 rounded-lg p-2">💬 Chat</div>
                 </Link>
                 <Link href={'/streak'}>
-                    <div className="bg-white/20 rounded-lg p-2">🔥 Streak</div>
+                    <div className="bg-white/20 rounded-lg p-2">{streak}🔥 Streak</div>
                 </Link>
                 <Link href={'/breath'}>
                     <div className="bg-white/20 rounded-lg p-2">🌬️ Breath</div>
