@@ -1,31 +1,52 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
+import Error from "../../components/Error";
 
-const addMoodToJournal = (mood, setJournal) => {
+const parseDate = (date) => {
+    const [day, month, year] = date.split(".").map(Number);
+    return new Date(year, month - 1, day);
+};
+
+const addMoodToJournal = (mood, setJournal, setErrorMessage) => {
     const prevJournalEntries = JSON.parse(localStorage.getItem("journal") || "[]");
     const lastJournalEntry = prevJournalEntries[prevJournalEntries.length - 1] ?? null;
-    const prevDate = lastJournalEntry?.date ?? null;
-    const todayDate = new Date(Date.now()).toLocaleDateString();
+    const prevDate = lastJournalEntry ? parseDate(lastJournalEntry.date) : null;
+    // const todayDate = parseDate(new Date(Date.now()).toLocaleDateString("pl-PL"));
+    const todayDate = parseDate("23.09.2025");
     
-    if(prevDate != todayDate) {
+    if(!prevDate || prevDate.getTime() != todayDate.getTime()) {
         const journalEntry = {
-            date: new Date(Date.now()).toLocaleDateString(),
+            // date: new Date(Date.now()).toLocaleDateString("pl-PL"),
+            date: todayDate.toLocaleDateString("pl-PL"),
             entry: mood,
         };
+
         const updatedJournal = [...prevJournalEntries, journalEntry];
         localStorage.setItem("journal", JSON.stringify(updatedJournal));
-        const streakLvl = JSON.parse(localStorage.getItem("streakLvl")) ?? null;
-        localStorage.setItem("streakLvl", JSON.stringify(((prevDate + 1 != todayDate) || (streakLvl == null)) ? 1 : (streakLvl + 1)));
+
+        const streakLvl = JSON.parse(localStorage.getItem("streakLvl")) ?? 0;
+        const diffDates =  prevDate ? todayDate.getTime() - prevDate.getTime() : 0;
+        diffDates != (1000 * 60 * 60 * 24) || (streakLvl == 0) ? localStorage.setItem("streakLvl", "1") : localStorage.setItem("streakLvl", JSON.stringify(streakLvl + 1));
+
+        setJournal(updatedJournal);
+    } else {
+        setErrorMessage("You can't post entries in journal more than once per day");
     }
-    setJournal(JSON.parse(localStorage.getItem("journal")));
 }
 
 const StreakPage = () => {
     const [mood, setMood] = useState("");
     const [journal, setJournal] = useState([]);
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         setJournal(JSON.parse(localStorage.getItem("journal")));
+
+        const prevJournalEntries = JSON.parse(localStorage.getItem("journal") || "[]");
+        const lastJournalEntry = prevJournalEntries[prevJournalEntries.length - 1] ?? null;
+        const todayDate = new Date("23.09.2025").toLocaleDateString("pl-PL");
+        const diffDates = lastJournalEntry ? parseDate(todayDate).getTime() - parseDate(lastJournalEntry.date).getTime() : parseDate(todayDate).getTime();
+        lastJournalEntry && (diffDates > (1000 * 60 * 60 * 24) || (localStorage.getItem("streakLvl") == null)) ? localStorage.setItem("streakLvl", 0) : localStorage.setItem("streakLvl", localStorage.getItem("streakLvl"));
     }, [])
 
     return (
@@ -47,20 +68,23 @@ const StreakPage = () => {
             </div>
             <div className="flex flex-col justify-center items-center">
                 <div className="flex items-center gap-2 p-4 bg-white/10 w-full max-w-3xl rounded-full shadow-md">
-                        <input
-                            type="text"
-                            placeholder="Type your message..."
-                            onChange={(event) => setMood(event.target.value)}
-                            value={mood}
-                            className="flex-1 px-4 py-2 rounded-full bg-white/20 placeholder-white text-white border-none focus:outline-none focus:ring-2 focus:ring-white/50"
-                        />
-                        <button
-                            className="bg-white/30 hover:bg-white/50 text-white font-semibold px-5 py-2 rounded-full shadow-md transition"
-                            onClick={() => addMoodToJournal(mood, setJournal)}
-                        >
-                            Send
-                        </button>
-                    </div>
+                    <input
+                        type="text"
+                        placeholder="Type your message..."
+                        onChange={(event) => setMood(event.target.value)}
+                        value={mood}
+                        className="flex-1 px-4 py-2 rounded-full bg-white/20 placeholder-white text-white border-none focus:outline-none focus:ring-2 focus:ring-white/50"
+                    />
+                    <button
+                        className="bg-white/30 hover:bg-white/50 text-white font-semibold px-5 py-2 rounded-full shadow-md transition"
+                        onClick={() => addMoodToJournal(mood, setJournal, setErrorMessage)}
+                    >
+                        Send
+                    </button>
+                </div>
+                <div>
+                    <Error message={errorMessage} onClose={() => setErrorMessage("")} />
+                </div>
             </div>
         </div>
     );
