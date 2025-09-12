@@ -1,53 +1,50 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import Error from "../../components/Error";
+import { useStreak } from "../../contexts/StreakContext";
 
-const parseDate = (date) => {
+export const parseDate = (date) => {
     const [day, month, year] = date.split(".").map(Number);
     return new Date(year, month - 1, day);
 };
-
-const addMoodToJournal = (mood, setJournal, setErrorMessage) => {
-    const prevJournalEntries = JSON.parse(localStorage.getItem("journal") || "[]");
-    const lastJournalEntry = prevJournalEntries[prevJournalEntries.length - 1] ?? null;
-    const prevDate = lastJournalEntry ? parseDate(lastJournalEntry.date) : null;
-    // const todayDate = parseDate(new Date(Date.now()).toLocaleDateString("pl-PL"));
-    const todayDate = parseDate("24.09.2025");
-    
-    if(!prevDate || prevDate.getTime() != todayDate.getTime()) {
-        const journalEntry = {
-            // date: new Date(Date.now()).toLocaleDateString("pl-PL"),
-            date: todayDate.toLocaleDateString("pl-PL"),
-            entry: mood,
-        };
-
-        const updatedJournal = [...prevJournalEntries, journalEntry];
-        localStorage.setItem("journal", JSON.stringify(updatedJournal));
-
-        const streakLvl = JSON.parse(localStorage.getItem("streakLvl")) ?? 0;
-        const diffDates =  prevDate ? todayDate.getTime() - prevDate.getTime() : 0;
-        diffDates != (1000 * 60 * 60 * 24) || (streakLvl == 0) ? localStorage.setItem("streakLvl", "1") : localStorage.setItem("streakLvl", JSON.stringify(streakLvl + 1));
-
-        setJournal(updatedJournal);
-    } else {
-        setErrorMessage("You can't post entries in journal more than once per day");
-    }
-}
 
 const StreakPage = () => {
     const [mood, setMood] = useState("");
     const [journal, setJournal] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
+    const { updateStreak } = useStreak();
 
     useEffect(() => {
         setJournal(JSON.parse(localStorage.getItem("journal")));
+    }, [])
 
+    const addMoodToJournal = (mood, setJournal, setErrorMessage) => {
         const prevJournalEntries = JSON.parse(localStorage.getItem("journal") || "[]");
         const lastJournalEntry = prevJournalEntries[prevJournalEntries.length - 1] ?? null;
-        const todayDate = new Date("23.09.2025").toLocaleDateString("pl-PL");
-        const diffDates = lastJournalEntry ? parseDate(todayDate).getTime() - parseDate(lastJournalEntry.date).getTime() : parseDate(todayDate).getTime();
-        lastJournalEntry && (diffDates > (1000 * 60 * 60 * 24) || (localStorage.getItem("streakLvl") == null)) ? localStorage.setItem("streakLvl", 0) : localStorage.setItem("streakLvl", localStorage.getItem("streakLvl"));
-    }, [])
+        const prevDate = lastJournalEntry ? parseDate(lastJournalEntry.date) : null;
+        // const todayDate = parseDate(new Date(Date.now()).toLocaleDateString("pl-PL"));
+        const todayDate = parseDate("30.09.2025");
+        
+        if(!prevDate || prevDate.getTime() != todayDate.getTime()) {
+            const journalEntry = {
+                // date: new Date(Date.now()).toLocaleDateString("pl-PL"),
+                date: todayDate.toLocaleDateString("pl-PL"),
+                entry: mood,
+            };
+
+            const updatedJournal = [...prevJournalEntries, journalEntry];
+            localStorage.setItem("journal", JSON.stringify(updatedJournal));
+
+            const streakLvl = JSON.parse(localStorage.getItem("streakLvl")) ?? 0;
+            const diffDates =  prevDate ? todayDate.getTime() - prevDate.getTime() : 0;
+            diffDates != (1000 * 60 * 60 * 24) || (streak == 0) ? localStorage.setItem("streakLvl", "1") : localStorage.setItem("streakLvl", JSON.stringify(streakLvl + 1));
+
+            setJournal(updatedJournal);
+            updateStreak(JSON.parse(localStroage.getItem("streakLvl")));
+        } else {
+            setErrorMessage("You can't post entries in journal more than once per day");
+        }
+    }
 
     return (
         <div className="relative min-h-screen bg-gradient-to-br from-teal-400 via-blue-500 to-purple-600 text-white">
