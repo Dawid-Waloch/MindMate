@@ -12,7 +12,7 @@ const addMoodToJournal = (mood, setJournal, setErrorMessage) => {
     const lastJournalEntry = prevJournalEntries[prevJournalEntries.length - 1] ?? null;
     const prevDate = lastJournalEntry ? parseDate(lastJournalEntry.date) : null;
     // const todayDate = parseDate(new Date(Date.now()).toLocaleDateString("pl-PL"));
-    const todayDate = parseDate("23.09.2025");
+    const todayDate = parseDate("24.09.2025");
     
     if(!prevDate || prevDate.getTime() != todayDate.getTime()) {
         const journalEntry = {
