@@ -36,7 +36,7 @@ const BreathPage = () => {
                 <Header />
             </div>
             <div className="flex flex-col items-center min-h-screen">
-                <div className="mt-5 text-2xl font-bold">{exerciseOn ? text : "Click Start Execrice"}</div>
+                <div className="mt-3 text-2xl font-bold">{exerciseOn ? text : "Click Start Execrice"}</div>
                 <div className="mt-10 rounded-full bg-white/20 w-80 h-80">
                     <div
                         className={`rounded-full bg-blue-500 transition-transform ease-in-out w-80 h-80`}
