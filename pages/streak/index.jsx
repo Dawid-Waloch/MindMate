@@ -12,7 +12,7 @@ const StreakPage = () => {
     const [mood, setMood] = useState("");
     const [journal, setJournal] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
-    const { updateStreak } = useStreak();
+    const { streak, updateStreak } = useStreak();
 
     useEffect(() => {
         setJournal(JSON.parse(localStorage.getItem("journal")));
@@ -23,7 +23,7 @@ const StreakPage = () => {
         const lastJournalEntry = prevJournalEntries[prevJournalEntries.length - 1] ?? null;
         const prevDate = lastJournalEntry ? parseDate(lastJournalEntry.date) : null;
         // const todayDate = parseDate(new Date(Date.now()).toLocaleDateString("pl-PL"));
-        const todayDate = parseDate("30.09.2025");
+        const todayDate = parseDate("8.10.2025");
         
         if(!prevDate || prevDate.getTime() != todayDate.getTime()) {
             const journalEntry = {
@@ -35,12 +35,9 @@ const StreakPage = () => {
             const updatedJournal = [...prevJournalEntries, journalEntry];
             localStorage.setItem("journal", JSON.stringify(updatedJournal));
 
-            const streakLvl = JSON.parse(localStorage.getItem("streakLvl")) ?? 0;
-            const diffDates =  prevDate ? todayDate.getTime() - prevDate.getTime() : 0;
-            diffDates != (1000 * 60 * 60 * 24) || (streak == 0) ? localStorage.setItem("streakLvl", "1") : localStorage.setItem("streakLvl", JSON.stringify(streakLvl + 1));
-
             setJournal(updatedJournal);
-            updateStreak(JSON.parse(localStroage.getItem("streakLvl")));
+            console.log('streak', streak)
+            updateStreak(streak + 1);
         } else {
             setErrorMessage("You can't post entries in journal more than once per day");
         }

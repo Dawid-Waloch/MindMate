@@ -4,17 +4,16 @@ import { parseDate } from "../pages/streak";
 const StreakContext = createContext();
 
 export const StreakProvider = ({ children }) => {
-    const [streak, setStreak] = useState();
+    const [streak, setStreak] = useState(0);
 
     useEffect(() => {
         const streakLvl = localStorage.getItem("streakLvl");
         
         const prevJournalEntries = JSON.parse(localStorage.getItem("journal") || "[]");
         const lastJournalEntry = prevJournalEntries[prevJournalEntries.length - 1] ?? null;
-        const todayDate = parseDate("30.09.2025");
+        const todayDate = parseDate("8.10.2025");
         const diffDates = lastJournalEntry ? todayDate.getTime() - parseDate(lastJournalEntry.date).getTime() : todayDate.getTime();
-        lastJournalEntry && (diffDates > (1000 * 60 * 60 * 24) || (streakLvl == null)) ? localStorage.setItem("streakLvl", 0) : localStorage.setItem("streakLvl", streakLvl);
-        setStreak(streakLvl);
+        lastJournalEntry && (diffDates > (1000 * 60 * 60 * 24) || (streakLvl == null)) ? updateStreak(0) : updateStreak(JSON.parse(streakLvl));
     }, [])
 
     const updateStreak = (newStreak) => {
