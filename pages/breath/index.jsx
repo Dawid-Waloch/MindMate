@@ -6,21 +6,19 @@ const BreathPage = () => {
     const [exerciseOn, setExercieOn] = useState(false);
     const [showInitialStep, setShowInitialStep] = useState(true);
     const timeoutRef = useRef(null);
-    const initialSteps = useRef([
+    const [steps] = useState([
         { text: "Prepare yourself to exercise", scale: 0, duration: 4000 },
         { text: "Inhale through nose", scale: 1, duration: 4000 },
         { text: "Hold", scale: 1, duration: 7000 },
         { text: "Exhale", scale: 0, duration: 8000 },
         { text: "Hold", scale: 0, duration: 2000 },
     ]);
-    const [steps, setSteps] = useState(initialSteps.current);
     const displaySteps = showInitialStep ? steps : steps.slice(1);
 
     useEffect(() => {
         if(!exerciseOn) {
             clearInterval(timeoutRef.current);
             setCurrentStep(0);
-            setSteps(initialSteps.current);
             setShowInitialStep(true);
             return;
         }
@@ -35,7 +33,7 @@ const BreathPage = () => {
         }, duration)
 
         return () => clearInterval(timeoutRef.current);
-    }, [exerciseOn, currentStep, steps, showInitialStep])
+    }, [exerciseOn, currentStep, showInitialStep])
 
     const { text, scale, duration } = displaySteps[currentStep];
 
