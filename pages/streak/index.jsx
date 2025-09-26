@@ -36,6 +36,7 @@ const StreakPage = () => {
             setJournal(updatedJournal);
             console.log('streak', streak)
             updateStreak(streak + 1);
+            setMood("");
         } else {
             setErrorMessage("You can't post entries in journal more than once per day");
         }
