@@ -22,12 +22,10 @@ const StreakPage = () => {
         const prevJournalEntries = JSON.parse(localStorage.getItem("journal") || "[]");
         const lastJournalEntry = prevJournalEntries[prevJournalEntries.length - 1] ?? null;
         const prevDate = lastJournalEntry ? parseDate(lastJournalEntry.date) : null;
-        // const todayDate = parseDate(new Date(Date.now()).toLocaleDateString("pl-PL"));
-        const todayDate = parseDate("8.10.2025");
+        const todayDate = parseDate(new Date(Date.now()).toLocaleDateString("pl-PL"));
         
         if(!prevDate || prevDate.getTime() != todayDate.getTime()) {
             const journalEntry = {
-                // date: new Date(Date.now()).toLocaleDateString("pl-PL"),
                 date: todayDate.toLocaleDateString("pl-PL"),
                 entry: mood,
             };

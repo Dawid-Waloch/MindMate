@@ -11,7 +11,7 @@ export const StreakProvider = ({ children }) => {
         
         const prevJournalEntries = JSON.parse(localStorage.getItem("journal") || "[]");
         const lastJournalEntry = prevJournalEntries[prevJournalEntries.length - 1] ?? null;
-        const todayDate = parseDate("8.10.2025");
+        const todayDate = parseDate(new Date(Date.now()).toLocaleDateString("pl-PL"));
         const diffDates = lastJournalEntry ? todayDate.getTime() - parseDate(lastJournalEntry.date).getTime() : todayDate.getTime();
         lastJournalEntry && (diffDates > (1000 * 60 * 60 * 24) || (streakLvl == null)) ? updateStreak(0) : updateStreak(JSON.parse(streakLvl));
     }, [])
