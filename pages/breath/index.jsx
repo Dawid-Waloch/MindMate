@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 
 const BreathPage = () => {
     const [currentStep, setCurrentStep] = useState(0);
-    const [exerciseOn, setExercieOn] = useState(false);
+    const [exerciseOn, setExerciseOn] = useState(false);
     const [showInitialStep, setShowInitialStep] = useState(true);
     const timeoutRef = useRef(null);
     const [steps] = useState([
@@ -55,7 +55,7 @@ const BreathPage = () => {
                 </div>
                 <button
                     className="bg-white/20 p-2 rounded-lg text-xl mt-5"
-                    onClick={() => setExercieOn((prev) => !prev)}
+                    onClick={() => setExerciseOn((prev) => !prev)}
                 >
                     {exerciseOn ? "Stop" : "Start"} exercise
                 </button>
