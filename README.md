@@ -8,7 +8,7 @@ A lightweight MVP designed to help users in difficult moments — through simple
 > 🎬 Coming soon: a 3-minute demo video showcasing chat, breathing animation, streak, and SOS mode.
 
 ### MVP Features
-- **Chat (AI buddy)** – Users can type (or speak), bot replies in a supportive tone.  
+- **Chat (AI buddy)** – Users can type, bot replies in a supportive tone.  
 - **Breathing / Mindfulness exercise** – Animated circle expanding/contracting with “Inhale / Exhale.”  
 - **SOS / Help mode** – One tap → hotlines and support numbers (e.g. 116 123 + international).  
 - **Streaks** – Counter of consecutive days with mood entries, small badge as motivation.  
