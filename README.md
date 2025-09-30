@@ -49,7 +49,7 @@ Simple, supportive wording:
     npm run dev
     ```
    
-4. **Configure API keys:**
+4. **Configure API keys (`.env.local`):**
 
     ```env
     OPENAI_API_KEY=YOUR_OPENAI_API_KEY
